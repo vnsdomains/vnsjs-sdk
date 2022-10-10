@@ -1,9 +1,9 @@
 {
-  "name": "@ensdomains/ensjs",
+  "name": "@vnsdomains/vnsjs",
   "version": "2.1.0",
-  "description": "ens.js v2",
+  "description": "vns.js v2",
   "main": "dist/index.js",
-  "repository": "ensdomains/ensjs",
+  "repository": "vnsdomains/vnsjs-sdk",
   "files": [
     "dist"
   ],
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@ensdomains/address-encoder": "^0.1.7",
+    "@vnsdomains/address-encoder": "^0.2.20",
     "@ensdomains/ens": "0.4.5",
     "@ensdomains/resolver": "0.2.4",
     "content-hash": "^2.5.2",
