@@ -1,6 +1,6 @@
 {
   "name": "@vnsdomains/vnsjs",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "vns.js v2",
   "main": "dist/index.js",
   "repository": "vnsdomains/vnsjs-sdk",
@@ -46,9 +46,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
-    "@vnsdomains/address-encoder": "^0.2.20",
     "@ensdomains/ens": "0.4.5",
     "@ensdomains/resolver": "0.2.4",
+    "@vnsdomains/address-encoder": "^0.2.20",
     "content-hash": "^2.5.2",
     "eth-ens-namehash": "^2.0.8",
     "ethers": "^5.0.13",
