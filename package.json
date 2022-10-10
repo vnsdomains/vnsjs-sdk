@@ -1,6 +1,6 @@
 {
   "name": "@vnsdomains/vnsjs",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "vns.js v2",
   "main": "dist/index.js",
   "repository": "vnsdomains/vnsjs-sdk",

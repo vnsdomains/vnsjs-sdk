@@ -23,7 +23,7 @@ function getResolverContract({ address, provider }) {
   return new ethers.Contract(address, resolverContract, provider)
 }
 
-function getENSContract({ address, provider }) {
+function getVNSContract({ address, provider }) {
   return new ethers.Contract(address, ensContract, provider)
 }
 
@@ -179,14 +179,14 @@ async function setTextWithResolver({
 
 class Resolver {
   //TODO
-  constructor({ address, ens }) {
+  constructor({ address, vns }) {
     this.address = address
-    this.ens = ens
+    this.vns = vns
   }
   name(name) {
     return new Name({
       name,
-      ens: this.ens,
+      vns: this.vns,
       provider: this.provider,
       signer: this.signer,
       resolver: this.address,
@@ -196,12 +196,12 @@ class Resolver {
 
 class Name {
   constructor(options) {
-    const { name, ens, provider, signer, namehash: nh, resolver } = options
+    const { name, vns, provider, signer, namehash: nh, resolver } = options
     if (options.namehash) {
       this.namehash = nh
     }
-    this.ens = ens
-    this.ensWithSigner = this.ens.connect(signer)
+    this.vns = vns
+    this.vnsWithSigner = this.vns.connect(signer)
     this.name = name
     this.namehash = namehash(name)
     this.provider = provider
@@ -210,25 +210,25 @@ class Name {
   }
 
   async getOwner() {
-    return this.ens.owner(this.namehash)
+    return this.vns.owner(this.namehash)
   }
 
   async setOwner(address) {
     if (!address) throw new Error('No newOwner address provided!')
-    return this.ensWithSigner.setOwner(this.namehash, address)
+    return this.vnsWithSigner.setOwner(this.namehash, address)
   }
 
   async getResolver() {
-    return this.ens.resolver(this.namehash)
+    return this.vns.resolver(this.namehash)
   }
 
   async setResolver(address) {
     if (!address) throw new Error('No resolver address provided!')
-    return this.ensWithSigner.setResolver(this.namehash, address)
+    return this.vnsWithSigner.setResolver(this.namehash, address)
   }
 
   async getTTL() {
-    return this.ens.ttl(this.namehash)
+    return this.vns.ttl(this.namehash)
   }
 
   async getResolverAddr() {
@@ -320,12 +320,12 @@ class Name {
 
   async setSubnodeOwner(label, newOwner) {
     const lh = labelhash(label)
-    return this.ensWithSigner.setSubnodeOwner(this.namehash, lh, newOwner)
+    return this.vnsWithSigner.setSubnodeOwner(this.namehash, lh, newOwner)
   }
 
   async setSubnodeRecord(label, newOwner, resolver, ttl = 0) {
     const lh = labelhash(label)
-    return this.ensWithSigner.setSubnodeRecord(
+    return this.vnsWithSigner.setSubnodeRecord(
       this.namehash,
       lh,
       newOwner,
@@ -346,9 +346,9 @@ class Name {
   }
 }
 
-export default class ENS {
+export default class VNS {
   constructor(options) {
-    const { networkId, provider, ensAddress } = options
+    const { networkId, provider, vnsAddress } = options
     let ethersProvider
     if (Provider.isProvider(provider)) {
       //detect ethersProvider
@@ -358,8 +358,8 @@ export default class ENS {
     }
     this.provider = ethersProvider
     this.signer = ethersProvider.getSigner()
-    this.ens = getENSContract({
-      address: ensAddress ? ensAddress : registries[networkId],
+    this.vns = getVNSContract({
+      address: vnsAddress ? vnsAddress : registries[networkId],
       provider: ethersProvider,
     })
   }
@@ -367,7 +367,7 @@ export default class ENS {
   name(name) {
     return new Name({
       name,
-      ens: this.ens,
+      vns: this.vns,
       provider: this.provider,
       signer: this.signer,
     })
@@ -375,7 +375,7 @@ export default class ENS {
 
   resolver(address) {
     return new Resolver({
-      ens: this.ens,
+      vns: this.vns,
       provider: this.provider,
       address: address,
     })
@@ -383,7 +383,7 @@ export default class ENS {
 
   async getName(address) {
     const reverseNode = `${address.slice(2)}.addr.reverse`
-    const resolverAddr = await this.ens.resolver(namehash(reverseNode))
+    const resolverAddr = await this.vns.resolver(namehash(reverseNode))
     return this.getNameWithResolver(address, resolverAddr)
   }
 
@@ -425,7 +425,8 @@ export default class ENS {
 export {
   namehash,
   labelhash,
-  getENSContract,
+  getVNSContract,
   getResolverContract,
   getEnsAddress,
+  VNS,
 }

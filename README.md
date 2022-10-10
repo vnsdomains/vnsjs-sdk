@@ -1,35 +1,43 @@
-## Note: We are working on the next version of this library, which will include batch calling and other features. Once that is out, we will be deprecating this library. We generally recommend [ethers.js](https://docs.ethers.io/v5/api/providers/provider/#Provider--ens-methods)
-
-# ENS.js V2
-
-This is the rewrite of `ensjs`. If you are looking for the previous version, look for [ethereum-ens](https://www.npmjs.com/package/ethereum-ens)
+# VNS.js V2
 
 ## Overview of the API
 
 ### Setup
 
 ```
-import ENS, { getEnsAddress } from '@ensdomains/ensjs'
+import { getEnsAddress, VNS } from '@vnsdomains/vnsjs'
+import { ethers } from 'ethers'
 
 
+const provider = new ethers.providers.JsonRpcProvider(
+    "https://evmexplorer.velas.com/rpc",
+    {
+        chainId: 106,
+        name: "Velas"
+    }
+)
 
-const ens = new ENS({ provider, ensAddress: getEnsAddress('1') })
+const vns = new VNS({ 
+    provider,
+    vnsAddress: getEnsAddress('106') 
+})
 
-ens.name('resolver.eth').getAddress() // 0x123
+console.log(await vns.name('test.vlx').getAddress())
+console.log(await vns.getName('0x8483fb78af59fbd15fd431d001f13844740ce6bc'))
 ```
 
 ### exports
 
 ```
-default - ENS
+default - VNS
 getEnsAddress
 getResolverContract
-getENSContract
+getVNSContract
 namehash
 labelhash
 ```
 
-### ENS Interface
+### VNS Interface
 
 ```
 name(name: String) => Name
@@ -61,91 +69,91 @@ Sets the reverse record for the current Ethereum address
 async getOwner() => Promise<EthereumAddress>
 ```
 
-Returns the owner/controller for the current ENS name.
+Returns the owner/controller for the current VNS name.
 
 ```ts
 async setOwner(address: EthereumAddress) => Promise<Ethers>
 ```
 
-Sets the owner/controller for the current ENS name.
+Sets the owner/controller for the current VNS name.
 
 ```ts
 async getResolver() => Promise<EthereumAddress>
 ```
 
-Returns the resolver for the current ENS name.
+Returns the resolver for the current VNS name.
 
 ```ts
 async setResolver(address: EthereumAddress) => Promise<EthereumAddress>
 ```
 
-Sets the resolver for the current ENS name.
+Sets the resolver for the current VNS name.
 
 ```ts
 async getTTL() => Promise<Number>
 ```
 
-Returns the TTL for the current ENS name.
+Returns the TTL for the current VNS name.
 
 ```ts
 async getAddress(coinId: String) => Promise<EthereumAddress>
 ```
 
-Returns the address for the current ENS name for the coinId provided.
+Returns the address for the current VNS name for the coinId provided.
 
 ```ts
 async setAddress(coinId: String, address: EthereumAddress) => Promise<EthersTxObject>
 ```
 
-Sets the address for the current ENS name for the coinId provided.
+Sets the address for the current VNS name for the coinId provided.
 
 ```ts
 async getContent() => Promise<ContentHash>
 ```
 
-Returns the contentHash for the current ENS name.
+Returns the contentHash for the current VNS name.
 
 ```ts
 async setContenthash(content: ContentHash) => Promise<EthersTxObject>
 ```
 
-Sets the contentHash for the current ENS name.
+Sets the contentHash for the current VNS name.
 
 ```ts
 async getText(key: String) => Promise<String>
 ```
 
-Returns the text record for a given key for the current ENS name.
+Returns the text record for a given key for the current VNS name.
 
 ```ts
 async setText(key: String, recordValue: String) => Promise<EthersTxObject>
 ```
 
-Sets the text record for a given key for the current ENS name.
+Sets the text record for a given key for the current VNS name.
 
 ```ts
 async setSubnodeOwner(label: String, newOwner: EthereumAddress) => Promise<EthersTxObject>
 ```
 
-Sets the subnode owner for a subdomain of the current ENS name.
+Sets the subnode owner for a subdomain of the current VNS name.
 
 ```ts
 async setSubnodeRecord(label: String, newOwner: EthereumAddress, resolver: EthereumAddress, ttl: ?Number) => Promise<EthersTxObject>
 ```
 
-Sets the subnode owner, resolver, ttl for a subdomain of the current ENS name in one transaction.
+Sets the subnode owner, resolver, ttl for a subdomain of the current VNS name in one transaction.
 
 ```ts
  async createSubdomain(label: String) => Promise<EthersTxObject>
 ```
 
-Creates a subdomain for the current ENS name. Automatically sets the owner to the signing account.
+Creates a subdomain for the current VNS name. Automatically sets the owner to the signing account.
 
 ```ts
 async deleteSubdomain(label: String) => Promise<EthersTxObject>
 ```
 
-Deletes a subdomain for the current ENS name. Automatically sets the owner to "0x0..."
+Deletes a subdomain for the current VNS name. Automatically sets the owner to "0x0..."
 
 ## Resolver Interface
 
@@ -160,7 +168,3 @@ name(name) => Name
 ```
 
 Returns a Name Object that hardcodes the resolver
-
-## NOTE
-
-The previous version of `ensjs` can be found at https://github.com/ensdomains/ensjs/tree/v1
